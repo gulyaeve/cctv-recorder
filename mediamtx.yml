@@ -65,7 +65,7 @@ rtsp: yes
 # UDP-multicast allows to save bandwidth when clients are all in the same LAN.
 # TCP is the most versatile.
 # The handshake is always performed with TCP.
-rtspTransports: [tcp]
+rtspTransports: [udp]
 
 
 # Basic MediaMTX configuration
