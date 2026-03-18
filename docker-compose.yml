@@ -2,6 +2,7 @@ services:
   media-service:
     image: bluenviron/mediamtx:1.15.1
     container_name: media-service
+    restart: unless-stopped
     environment:
       MTX_PATHDEFAULTS_RECORD: ${RECORD_ENABLED}
       MTX_PATHDEFAULTS_RECORDPATH: ${RECORD_PATH}
@@ -33,6 +34,7 @@ services:
 
   cctv-recorder:
     image: cctv-recorder
+    restart: unless-stopped
     build:
       dockerfile: Dockerfile
     container_name: cctv-recorder
