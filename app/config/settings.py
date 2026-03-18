@@ -7,6 +7,9 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     CCTV_API: str
 
+    TOKEN_BEARER: str = "Admin123"
+
+
     DATABASE_URL: str = "sqlite:///./rtsp_hub.db"
 
     # API / App metadata

@@ -20,3 +20,7 @@ class ScheduleScheme(ScheduleBaseScheme):
     class Config:
         from_attributes = True
 
+
+class ScheduleDaily(ScheduleScheme):
+    camera_id: int
+    camera_rtsp: str
