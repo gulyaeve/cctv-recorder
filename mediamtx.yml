@@ -74,7 +74,9 @@ webrtcAddress: :8889
 webrtcEncryption: no
 webrtcAllowOrigin: '*'
 webrtcLocalUDPAddress: :8189
+
 webrtcIPsFromInterfaces: yes
+webrtcAdditionalHosts: [172.18.4.170]
 
 ###############################################
 # Path settings
