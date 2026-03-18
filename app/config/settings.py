@@ -24,6 +24,8 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"
     LOG_MAX_DAYS: int = 30
 
+    RTSP_TRANSPORT: str = "udp"
+
     # CORS
     FRONTEND_URL: str = "http://localhost:3000"
     ADMIN_PANEL_URL: str = "http://localhost:3001"

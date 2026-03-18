@@ -92,7 +92,7 @@ class StreamWorker:
         cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error"]
 
         if is_rtsp_input:
-            cmd.extend(["-rtsp_transport", "tcp"])
+            cmd.extend(["-rtsp_transport", f"{settings.RTSP_TRANSPORT}"])
         else:
             cmd.extend(["-re", "-stream_loop", "-1"])
 
