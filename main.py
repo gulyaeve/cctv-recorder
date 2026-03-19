@@ -33,7 +33,9 @@ async def daily_job():
         for schedule in today_schedules:
             log.info(f"Added schedule {schedule.camera_rtsp}")
             base = settings.media_server_rtsp_base_url.rstrip("/")
-            output_url = f"{base}/{schedule.id}_{schedule.camera_id}"
+            stream_id = f"{schedule.id}_{schedule.camera_id}"
+
+            output_url = f"{base}/{stream_id}"
 
             log.info(output_url)
 
@@ -44,7 +46,7 @@ async def daily_job():
                 args=[
                     schedule.camera_rtsp,
                     output_url,
-                    schedule.id,
+                    stream_id,
                 ],
                 run_date=schedule.timestamp_start
             )
@@ -53,7 +55,7 @@ async def daily_job():
             aio_scheduler.add_job(
                 func=stream_manager.remove_stream,
                 trigger="date",
-                args=[schedule.id],
+                args=[stream_id],
                 run_date=schedule.timestamp_end
             )
 
