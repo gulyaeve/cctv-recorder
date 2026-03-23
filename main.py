@@ -40,7 +40,7 @@ async def daily_job():
 
             output_dir = f"{settings.VIDEO_RECORD_PATH}/{str(current_date)}"
             output_dir_path = Path(output_dir)
-            output_dir_path.mkdir(parents=True)
+            output_dir_path.mkdir(parents=True, exist_ok=True)
 
             output_file = f"{output_dir}/{stream_id}.mp4"
 
