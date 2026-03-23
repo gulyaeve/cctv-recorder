@@ -421,5 +421,5 @@ class FileRecorder:
 
 
 file_recorder = FileRecorder(
-    restart_backoff_seconds=settings.RESTART_BACKOFF_SECONDS,
+    restart_backoff_seconds=-1,
 )
