@@ -100,11 +100,12 @@ class StreamWorker:
             [
                 "-i",
                 self.source_uri,
-                "-c",
-                "copy",
-                "-f",
-                "rtsp",
-                self.output_url,
+                '-c:v', 'libx264',       # Video codec (re-encode)
+                '-b:v', "700k",         # Video bitrate (reduces size)
+                '-c:a', 'aac',           # Audio codec
+                '-bufsize', '1000k',     # Buffer size
+                '-max_muxing_queue_size', '2048', # Handle buffering issues      
+                "-y", self.output_url,
             ]
         )
 
@@ -202,7 +203,7 @@ class StreamWorker:
         self._update_state(StreamState.stopped)
 
 
-class StreamManager:
+class FileRecorder:
     def __init__(self, restart_backoff_seconds: int = 10) -> None:
         """Manage lifecycle of multiple `StreamWorker` instances.
 
@@ -247,13 +248,13 @@ class StreamManager:
                 return candidate
 
     def add_stream(
-        self, source_uri: str, output_file: str, stream_id: Optional[str] = None
+        self, source_uri: str, output_url: str, stream_id: Optional[str] = None
     ) -> str:
         """Create and start a worker for a given file-backed stream.
 
         Args:
             source_uri: Local file path or rtsp:// URL for the source.
-            output_file: Full file path for this stream.
+            output_url: Full output URL for this stream.
             stream_id: Optional unique identifier. If not provided, one is auto-generated.
 
         Raises:
@@ -273,9 +274,9 @@ class StreamManager:
                 self._dao is not None and self._dao.exists(assigned_id)
             ):
                 raise ValueError(f"{stream_id} already exists")
-            if not output_file:
-                raise ValueError("output_file is required")
-            target_url = output_file
+            if not output_url:
+                raise ValueError("output_url is required")
+            target_url = output_url
             worker = StreamWorker(
                 assigned_id,
                 source_uri,
@@ -415,6 +416,6 @@ class StreamManager:
 
 
 
-stream_manager = StreamManager(
+file_recorder = FileRecorder(
     restart_backoff_seconds=settings.RESTART_BACKOFF_SECONDS,
 )
