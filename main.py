@@ -21,7 +21,7 @@ aio_scheduler = AsyncIOScheduler()
 async def get_day_schedules(day: date) -> Optional[Sequence[ScheduleDaily]]:
     async with AsyncClient(verify=False, headers={"Authorization": f"Bearer {settings.TOKEN_BEARER}"}) as client:
         response = await client.get(
-            url=urljoin(settings.CCTV_API, "api/schedule/daily"),
+            url=urljoin(settings.CCTV_API, "api/schedule_daily"),
             params={"date": day},
         )
         if response.json():
