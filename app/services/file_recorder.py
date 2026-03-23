@@ -17,6 +17,7 @@ class StreamWorker:
         source_uri: str,
         output_url: str,
         restart_backoff_seconds: int,
+        duration: int,
     ):
         """Initialize a worker responsible for publishing a looped file to an output URL.
 
@@ -30,6 +31,7 @@ class StreamWorker:
         self.source_uri = source_uri
         self.output_url = output_url
         self.restart_backoff_seconds = restart_backoff_seconds
+        self.duration = duration
         # self.dao = StreamDAO()
         self.dao = None
         self._state_lock = threading.Lock()
@@ -101,10 +103,11 @@ class StreamWorker:
                 "-i",
                 self.source_uri,
                 '-c:v', 'libx264',       # Video codec (re-encode)
-                '-b:v', "700k",         # Video bitrate (reduces size)
+                '-b:v', "900k",         # Video bitrate (reduces size)
                 '-c:a', 'aac',           # Audio codec
-                '-bufsize', '1000k',     # Buffer size
-                '-max_muxing_queue_size', '2048', # Handle buffering issues      
+                '-bufsize', '2000k',     # Buffer size
+                '-max_muxing_queue_size', '2048', # Handle buffering issues
+                "-t", self.duration,
                 "-y", self.output_url,
             ]
         )
@@ -248,7 +251,7 @@ class FileRecorder:
                 return candidate
 
     def add_stream(
-        self, source_uri: str, output_url: str, stream_id: Optional[str] = None
+        self, source_uri: str, output_url: str, duration: int, stream_id: Optional[str] = None
     ) -> str:
         """Create and start a worker for a given file-backed stream.
 
@@ -282,6 +285,7 @@ class FileRecorder:
                 source_uri,
                 target_url,
                 self.restart_backoff_seconds,
+                duration,
             )
             self._workers[assigned_id] = worker
             worker.start()

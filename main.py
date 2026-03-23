@@ -42,7 +42,9 @@ async def daily_job():
             output_dir_path = Path(output_dir)
             output_dir_path.mkdir(parents=True, exist_ok=True)
 
-            output_file = f"{output_dir}/{stream_id}.mp4"
+            output_file = f"{output_dir}/{stream_id}.mkv"
+
+            duration = schedule.timestamp_end - schedule.timestamp_start
 
             # Start record
             aio_scheduler.add_job(
@@ -51,18 +53,19 @@ async def daily_job():
                 args=[
                     schedule.camera_rtsp,
                     output_file,
+                    duration.seconds,
                     stream_id,
                 ],
                 run_date=schedule.timestamp_start
             )
 
-            # Stop record
-            aio_scheduler.add_job(
-                func=file_recorder.remove_stream,
-                trigger="date",
-                args=[stream_id],
-                run_date=schedule.timestamp_end
-            )
+            # # Stop record
+            # aio_scheduler.add_job(
+            #     func=file_recorder.remove_stream,
+            #     trigger="date",
+            #     args=[stream_id],
+            #     run_date=schedule.timestamp_end
+            # )
 
 
 
