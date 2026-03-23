@@ -107,7 +107,7 @@ class StreamWorker:
                 '-c:a', 'aac',           # Audio codec
                 '-bufsize', '2000k',     # Buffer size
                 '-max_muxing_queue_size', '2048', # Handle buffering issues
-                "-t", self.duration,
+                "-t", str(self.duration),
                 "-y", self.output_url,
             ]
         )
