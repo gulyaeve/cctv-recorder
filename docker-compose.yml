@@ -46,9 +46,9 @@ services:
       - ./logs:/app/logs
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-    depends_on:
-      media-service:
-        condition: service_started
+    # depends_on:
+    #   media-service:
+    #     condition: service_started
   #   tty: true
     networks:
       - default
